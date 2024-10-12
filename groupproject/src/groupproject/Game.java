@@ -1,69 +1,99 @@
 package groupproject;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+import java.util.Scanner;
 
 /**
- *
- * @author nietr
+ * The main game class that handles the game flow.
  */
 public class Game {
     private Player player1;
     private Player player2;
     private GroupOfCards deck;
 
-    public Game(String player1Name, String player2Name) {
-        player1 = new Player(player1Name);
-        player2 = new Player(player2Name);
-        deck = new GroupOfCards();
-        deck.shuffle();
-        dealCards();
+    public Game() {
+        this.deck = new GroupOfCards(); // Create a new deck of cards
+        deck.shuffle(); // Shuffle the deck
     }
 
-    private void dealCards() {
-        while (!deck.isEmpty()) {
+    public void startGame() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Get player names
+        System.out.print("Enter the name of Player 1: ");
+        String name1 = scanner.nextLine();
+        player1 = new Player(name1);
+
+        System.out.print("Enter the name of Player 2: ");
+        String name2 = scanner.nextLine();
+        player2 = new Player(name2);
+
+        // Distribute cards to players
+        for (int i = 0; i < 26; i++) {
             player1.addCard(deck.drawCard());
-            if (!deck.isEmpty()) {
-                player2.addCard(deck.drawCard());
-            }
+            player2.addCard(deck.drawCard());
         }
+
+        // Start the game rounds
+        playRounds();
+        scanner.close();
     }
 
-    public void play() {
+    private void playRounds() {
         while (player1.hasCards() && player2.hasCards()) {
             Card card1 = player1.playCard();
             Card card2 = player2.playCard();
+            System.out.println(player1.getName() + " plays: " + card1);
+            System.out.println(player2.getName() + " plays: " + card2);
 
-            System.out.println(player1.getName() + " plays " + card1);
-            System.out.println(player2.getName() + " plays " + card2);
-
-            if (card1.getValue() > card2.getValue()) {
-                System.out.println(player1.getName() + " wins the round!");
+            // Compare card values
+            int comparison = compareCards(card1, card2);
+            if (comparison > 0) {
+                System.out.println(player1.getName() + " wins this round!");
                 player1.addCard(card1);
                 player1.addCard(card2);
-            } else if (card2.getValue() > card1.getValue()) {
-                System.out.println(player2.getName() + " wins the round!");
+            } else if (comparison < 0) {
+                System.out.println(player2.getName() + " wins this round!");
                 player2.addCard(card1);
                 player2.addCard(card2);
             } else {
-                System.out.println("War!");
-                // Logic for a "war" (could involve drawing more cards)
+                System.out.println("It's a tie! No cards are awarded.");
             }
-            System.out.println(player1.getName() + " has " + player1.getHandSize() + " cards left.");
-            System.out.println(player2.getName() + " has " + player2.getHandSize() + " cards left.");
+            System.out.println();
         }
 
-        if (player1.hasCards()) {
+        // Declare the winner
+        declareWinner();
+    }
+
+    private int compareCards(Card card1, Card card2) {
+        String[] values = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
+        int value1 = getCardValue(card1.getValue(), values);
+        int value2 = getCardValue(card2.getValue(), values);
+
+        return Integer.compare(value1, value2);
+    }
+
+    private int getCardValue(String value, String[] values) {
+        for (int i = 0; i < values.length; i++) {
+            if (values[i].equals(value)) {
+                return i; // Return the index as the value
+            }
+        }
+        return -1; // Default if not found
+    }
+
+    private void declareWinner() {
+        if (player1.hasCards() && !player2.hasCards()) {
             System.out.println(player1.getName() + " wins the game!");
-        } else {
+        } else if (player2.hasCards() && !player1.hasCards()) {
             System.out.println(player2.getName() + " wins the game!");
+        } else {
+            System.out.println("It's a draw!");
         }
     }
 
     public static void main(String[] args) {
-        Game warGame = new Game("Player 1", "Player 2");
-        warGame.play();
+        Game game = new Game();
+        game.startGame();
     }
 }

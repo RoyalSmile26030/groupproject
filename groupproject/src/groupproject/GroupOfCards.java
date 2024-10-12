@@ -1,39 +1,43 @@
 package groupproject;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author nietr
- */
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Represents a group of cards, typically a deck.
+ */
 public class GroupOfCards {
-    private ArrayList<Card> deck;
+    private ArrayList<Card> cards; // The group of cards
 
     public GroupOfCards() {
-        deck = new ArrayList<>();
-        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
-        for (String suit : suits) {
-            for (int i = 2; i <= 14; i++) {
-                deck.add(new Card(suit, i));
-            }
-        }
+        cards = new ArrayList<>();
+        initializeFullDeck(); // Initialize a full deck of cards
     }
 
     public void shuffle() {
-        Collections.shuffle(deck);
+        Collections.shuffle(cards); // Shuffle the cards
     }
 
     public Card drawCard() {
-        return deck.remove(0);
+        if (!cards.isEmpty()) {
+            return cards.remove(0); // Draw the top card
+        }
+        return null; // No cards left
     }
 
     public boolean isEmpty() {
-        return deck.isEmpty();
+        return cards.isEmpty(); // Check if there are cards left
+    }
+
+    // Initialize a full deck of cards
+    private void initializeFullDeck() {
+        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
+        String[] values = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
+        
+        for (String suit : suits) {
+            for (String value : values) {
+                cards.add(new Card(suit, value));
+            }
+        }
     }
 }

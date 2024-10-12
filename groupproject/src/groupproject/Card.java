@@ -4,21 +4,28 @@
  */
 package groupproject;
 
+/**
+ * Represents a playing card with a suit and value.
+ */
 public class Card {
-    private String suit;
-    private int value; // Value from 2 to 14 (2-10, Jack=11, Queen=12, King=13, Ace=14)
+    private String suit;  // The suit of the card
+    private String value; // The value of the card
 
-    public Card(String suit, int value) {
+    public Card(String suit, String value) {
         this.suit = suit;
         this.value = value;
     }
 
-    public int getValue() {
+    public String getSuit() {
+        return suit;
+    }
+
+    public String getValue() {
         return value;
     }
 
+    @Override
     public String toString() {
-        String[] valueNames = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
-        return valueNames[value - 2] + " of " + suit;
+        return value + " of " + suit;
     }
 }

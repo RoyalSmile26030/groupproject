@@ -1,23 +1,18 @@
 package groupproject;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
+import java.util.ArrayList;
 
 /**
- *
- * @author nietr
+ * Represents a player in the game.
  */
-import java.util.LinkedList;
-
 public class Player {
-    private String name;
-    private LinkedList<Card> hand;
+    private String name;  // Player's name
+    private ArrayList<Card> hand; // Player's hand of cards
 
     public Player(String name) {
         this.name = name;
-        this.hand = new LinkedList<>();
+        this.hand = new ArrayList<>(); // Initialize an empty hand
     }
 
     public String getName() {
@@ -25,18 +20,17 @@ public class Player {
     }
 
     public void addCard(Card card) {
-        hand.addLast(card);
+        hand.add(card); // Add a card to the player's hand
     }
 
     public Card playCard() {
-        return hand.removeFirst(); // Play the top card
+        if (!hand.isEmpty()) {
+            return hand.remove(0); // Play the top card
+        }
+        return null; // No cards left to play
     }
 
     public boolean hasCards() {
-        return !hand.isEmpty();
-    }
-
-    public int getHandSize() {
-        return hand.size();
+        return !hand.isEmpty(); // Check if the player has cards left
     }
 }
