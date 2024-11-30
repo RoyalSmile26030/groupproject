@@ -39,7 +39,17 @@ public class Game {
     }
 
     private void playRounds() {
+        Scanner scanner = new Scanner(System.in);
+
         while (player1.hasCards() && player2.hasCards()) {
+            System.out.println("\n" + player1.getName() + " has " + player1.getCardCount() + " cards.");
+            System.out.println(player2.getName() + " has " + player2.getCardCount() + " cards.");
+
+            // Ask players to play the next round
+            System.out.print("\nPress Enter to play the next round...");
+            scanner.nextLine();
+
+            // Players play their top cards
             Card card1 = player1.playCard();
             Card card2 = player2.playCard();
             System.out.println(player1.getName() + " plays: " + card1);
@@ -56,9 +66,10 @@ public class Game {
                 player2.addCard(card1);
                 player2.addCard(card2);
             } else {
-                System.out.println("It's a tie! No cards are awarded.");
+                System.out.println("It's a tie! Cards are returned to each player.");
+                player1.addCard(card1);
+                player2.addCard(card2);
             }
-            System.out.println();
         }
 
         // Declare the winner
@@ -83,12 +94,11 @@ public class Game {
     }
 
     private void declareWinner() {
-        if (player1.hasCards() && !player2.hasCards()) {
-            System.out.println(player1.getName() + " wins the game!");
-        } else if (player2.hasCards() && !player1.hasCards()) {
-            System.out.println(player2.getName() + " wins the game!");
-        } else {
-            System.out.println("It's a draw!");
+        System.out.println("\nGame Over!");
+        if (player1.hasCards()) {
+            System.out.println(player1.getName() + " wins the game with " + player1.getCardCount() + " cards!");
+        } else if (player2.hasCards()) {
+            System.out.println(player2.getName() + " wins the game with " + player2.getCardCount() + " cards!");
         }
     }
 

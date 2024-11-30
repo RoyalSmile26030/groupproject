@@ -1,6 +1,5 @@
 package groupproject;
 
-
 import java.util.ArrayList;
 
 /**
@@ -9,6 +8,10 @@ import java.util.ArrayList;
 public class Player {
     private String name;  // Player's name
     private ArrayList<Card> hand; // Player's hand of cards
+
+    public int getCardCount() {
+    return hand.size(); // Return the number of cards in the player's hand
+}
 
     public Player(String name) {
         this.name = name;
